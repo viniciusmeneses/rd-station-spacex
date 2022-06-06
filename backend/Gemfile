@@ -11,5 +11,8 @@ gem "thin"
 
 gem "rubocop"
 
+gem "dry-auto_inject"
+gem "dry-container"
+
 gem "httparty"
 gem "require_all"
