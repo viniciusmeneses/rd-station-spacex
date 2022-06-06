@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  backend:
+    container_name: spacex-api
+    build: ./backend
+    ports:
+      - 3001:3001
+    volumes:
+      - ./backend:/usr/app
+
+  frontend:
+    container_name: spacex-app
+    build: ./frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/usr/app
+      - exclude:/usr/app/node_modules/
+    links:
+      - backend
+    depends_on:
+      - backend
+
+volumes:
+  exclude:
+    driver: local
