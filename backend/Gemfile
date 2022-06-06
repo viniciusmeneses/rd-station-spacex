@@ -11,4 +11,5 @@ gem "thin"
 
 gem "rubocop"
 
+gem "httparty"
 gem "require_all"
