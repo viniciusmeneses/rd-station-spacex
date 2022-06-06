@@ -5,6 +5,7 @@ require "sinatra/cross_origin"
 
 require "sinatra/reloader" if development?
 
+require_relative "container"
 require_relative "requires"
 
 configure do
