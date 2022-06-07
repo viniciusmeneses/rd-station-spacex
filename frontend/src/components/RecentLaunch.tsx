@@ -20,13 +20,14 @@ export const RecentLaunch = ({
   isLoading,
   ...props
 }: RecentLaunchProps) => {
-  if (isLoading || !launch) {
+  if (isLoading)
     return (
       <Flex w="full" justifyContent="center" alignItems="center" h="100px">
         <CircularProgress isIndeterminate />
       </Flex>
     );
-  }
+
+  if (!launch) return null;
 
   return (
     <HStack w="full" {...props}>

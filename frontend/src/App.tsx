@@ -83,7 +83,7 @@ export const App = () => {
               </SearchButton>
             </HStack>
 
-            {isLoadingLaunches || launches?.length === 0 ? (
+            {isLoadingLaunches ? (
               <Flex
                 w="full"
                 justifyContent="center"
