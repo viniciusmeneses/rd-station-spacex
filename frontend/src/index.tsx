@@ -2,6 +2,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import ReactDOM from "react-dom/client";
 import { ApiProvider } from "./api/ApiProvider";
 import { App } from "./App";
+import { OptimizeProvider } from "./lib/google-optimize";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -10,7 +11,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <ApiProvider>
     <ChakraProvider>
-      <App />
+      <OptimizeProvider>
+        <App />
+      </OptimizeProvider>
     </ChakraProvider>
   </ApiProvider>
 );
