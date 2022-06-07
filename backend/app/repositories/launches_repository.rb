@@ -3,7 +3,6 @@ class LaunchesRepository
 
   def last
     LaunchMapper.from_json(spacex_api.get("/launches/latest"))
-    LaunchMapper.from_json(launch)
   end
 
   def next
