@@ -2,8 +2,8 @@ export interface Launch {
   id: string;
   name: string;
   details?: string;
-  flightNumber: number;
+  flight_number: number;
   date: string;
-  success: boolean;
-  imageUrl?: string;
+  success?: boolean;
+  image_url?: string;
 }

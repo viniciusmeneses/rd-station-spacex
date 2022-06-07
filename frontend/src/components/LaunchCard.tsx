@@ -12,7 +12,7 @@ import { Launch } from "../types";
 import { formatDate } from "../utils";
 
 export const LaunchCard = ({
-  launch: { name, details, date, success, imageUrl, flightNumber },
+  launch: { name, details, date, success, image_url, flight_number },
   ...props
 }: StackProps & { launch: Launch }) => {
   const parsedDate = parseISO(date);
@@ -31,14 +31,16 @@ export const LaunchCard = ({
     >
       <VStack spacing={1} alignItems="start" flex={1}>
         <Heading fontSize="lg">
-          {name} #{flightNumber}
+          {name} #{flight_number}
         </Heading>
         <Text fontSize="sm">{details}</Text>
 
         <HStack color="gray.500" fontSize="sm">
-          <InfoOutlineIcon />
-          {isAfter(parsedDate, new Date()) && (
-            <Text>{success ? "Launched" : "Failed"}</Text>
+          {success != null && isAfter(new Date(), parsedDate) && (
+            <>
+              <InfoOutlineIcon />
+              <Text>{success ? "Launched" : "Failed"}</Text>
+            </>
           )}
         </HStack>
 
@@ -48,7 +50,7 @@ export const LaunchCard = ({
         </HStack>
       </VStack>
 
-      {imageUrl && <Image src={imageUrl} boxSize="100px" alignSelf="center" />}
+      {image_url && <Image src={image_url} boxSize="75px" alignSelf="center" />}
     </HStack>
   );
 };
