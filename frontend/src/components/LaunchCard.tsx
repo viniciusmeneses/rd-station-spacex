@@ -7,19 +7,15 @@ import {
   Image,
   StackProps,
 } from "@chakra-ui/react";
+import { isAfter, parseISO } from "date-fns";
 import { Launch } from "../types";
-
-const formatDate = (date: Date) =>
-  new Intl.DateTimeFormat(undefined, {
-    dateStyle: "short",
-    timeStyle: "short",
-  }).format(date);
+import { formatDate } from "../utils";
 
 export const LaunchCard = ({
   launch: { name, details, date, success, imageUrl, flightNumber },
   ...props
 }: StackProps & { launch: Launch }) => {
-  const parsedDate = new Date(date);
+  const parsedDate = parseISO(date);
 
   return (
     <HStack
@@ -41,7 +37,9 @@ export const LaunchCard = ({
 
         <HStack color="gray.500" fontSize="sm">
           <InfoOutlineIcon />
-          <Text>{success ? "Launched" : "Failed"}</Text>
+          {isAfter(parsedDate, new Date()) && (
+            <Text>{success ? "Launched" : "Failed"}</Text>
+          )}
         </HStack>
 
         <HStack color="gray.500" fontSize="sm">
