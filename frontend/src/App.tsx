@@ -42,7 +42,7 @@ export const App = () => {
   return (
     <Box
       minH="100vh"
-      bgColor={experiment === PageVariant.Experiment ? "blue.100" : "gray.50"}
+      bgColor={experiment === PageVariant.Experiment ? "blue.50" : "gray.50"}
     >
       <Container>
         <VStack pt={5} spacing={5} divider={<StackDivider />}>
