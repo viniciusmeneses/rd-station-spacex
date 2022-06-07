@@ -6,51 +6,23 @@ import {
   Heading,
   HStack,
   StackDivider,
-  StackProps,
   VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { LaunchPeriod, useLaunches, useRecentLaunch } from "./api";
 
-import { LaunchCard, SearchButton } from "./components";
-import { Launch } from "./types";
+import { LaunchCard, RecentLaunch, SearchButton } from "./components";
+import { useOptimizeExperiment } from "./lib/google-optimize";
 
-type RecentLaunchProps = StackProps & {
-  label: string;
-  launch?: Launch;
-  isLoading: boolean;
-};
+enum PageVariant {
+  Default = "0",
+  Experiment = "1",
+}
 
-const RecentLaunch = ({
-  label,
-  launch,
-  isLoading,
-  ...props
-}: RecentLaunchProps) => {
-  if (isLoading || !launch) {
-    return (
-      <Flex w="full" justifyContent="center" alignItems="center" h="100px">
-        <CircularProgress isIndeterminate />
-      </Flex>
-    );
-  }
-
-  return (
-    <HStack w="full" {...props}>
-      <Heading
-        fontSize="md"
-        color="blue.500"
-        sx={{
-          textOrientation: "upright",
-          writingMode: "vertical-rl",
-        }}
-      >
-        {label}
-      </Heading>
-      <LaunchCard launch={launch} />
-    </HStack>
-  );
-};
+const usePageExperiment = () =>
+  useOptimizeExperiment<PageVariant>(
+    process.env.REACT_APP_OPTIMIZE_EXPERIMENT_ID ?? ""
+  ) ?? PageVariant.Default;
 
 export const App = () => {
   const [search, setSearch] = useState<LaunchPeriod>(LaunchPeriod.Previous);
@@ -65,25 +37,32 @@ export const App = () => {
 
   const { data: launches, isLoading: isLoadingLaunches } = useLaunches(search);
 
+  const experiment = usePageExperiment();
+
   return (
-    <Box minH="100vh" bgColor="gray.50">
+    <Box
+      minH="100vh"
+      bgColor={experiment === PageVariant.Experiment ? "blue.100" : "gray.50"}
+    >
       <Container>
         <VStack pt={5} spacing={5} divider={<StackDivider />}>
           <Heading fontSize="3xl">SpaceX Launches</Heading>
 
-          <VStack spacing={5} w="full">
-            <RecentLaunch
-              label="LAST"
-              launch={lastLaunch}
-              isLoading={isLoadingLastLaunch}
-            />
+          {experiment === PageVariant.Default && (
+            <VStack spacing={5} w="full">
+              <RecentLaunch
+                label="LAST"
+                launch={lastLaunch}
+                isLoading={isLoadingLastLaunch}
+              />
 
-            <RecentLaunch
-              label="NEXT"
-              launch={nextLaunch}
-              isLoading={isLoadingNextLaunch}
-            />
-          </VStack>
+              <RecentLaunch
+                label="NEXT"
+                launch={nextLaunch}
+                isLoading={isLoadingNextLaunch}
+              />
+            </VStack>
+          )}
 
           <VStack spacing={5} w="full">
             <HStack spacing={3}>
